@@ -67,10 +67,10 @@ function validarCampos(cliente) {
     alert("Valor deve ser um número positivo.");
     return false;
   }
-  //if (vencimento < hoje) {
-    //alert("Vencimento deve ser uma data futura.");
-    //return false;
-  //}
+  if (vencimento < hoje) {
+    alert("Vencimento deve ser uma data futura.");
+    return false;
+  }
 
   return true;
 }
@@ -101,13 +101,14 @@ async function carregarClientes() {
     const status = diasAtraso > 0 ? "Inadimplente" : "Em dia";
     let notificacao = "";
 
-    if (diasAtraso > 0 && diasAtraso <= 3) {
+    if (diasAtraso > 0 && diasAtraso <= 1) {
   notificacao = "Aviso amigável";
-} else if (diasAtraso > 3 && diasAtraso <= 10) {
+} else if (diasAtraso > 1 && diasAtraso <= 10) {
   notificacao = "Lembrete formal";
 } else if (diasAtraso > 10) {
   notificacao = "Notificação final";
 }
+cliente.notificacao = notificacao; // ← ESSA LINHA É ESSENCIAL
 
     const linha = document.createElement("tr");
     if (status === "Inadimplente") linha.classList.add("inadimplente");
@@ -123,6 +124,7 @@ async function carregarClientes() {
       <td>
         <button onclick="editarCliente(${cliente.id})">Editar</button>
         <button onclick="excluirCliente(${cliente.id})">Excluir</button>
+        <button onclick='enviarNotificacao(${JSON.stringify(cliente)})'>Enviar notificação</button>
       </td>
     `;
     tabela.appendChild(linha);
@@ -142,6 +144,33 @@ async function excluirCliente(id) {
     await fetch(`/api/clientes/${id}`, { method: "DELETE" });
     carregarClientes();
   }
+}
+function enviarNotificacao(cliente) {
+  // Garante que o tipo de notificação existe
+  const tipo = cliente.notificacao || 'Aviso amigável';
+
+  fetch('/simular-envio', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ...cliente, notificacao: tipo })
+  })
+  .then(res => res.json())
+  .then(data => {
+    const box = document.createElement('div');
+    box.className = 'notificacao-box';
+    box.innerHTML = `
+      <strong> ✉️ ${data.tipo}</strong><br>
+      Enviado para ${data.email}:<br>
+      ${data.mensagem}<br>
+      <small>${data.timestamp}</small>
+`;
+    document.body.appendChild(box);
+    setTimeout(() => box.remove(), 5000);
+  })
+  .catch(err => {
+    console.error(err);
+    alert('Erro ao simular envio');
+  });
 }
 
 carregarClientes();
