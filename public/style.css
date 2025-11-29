@@ -1,195 +1,260 @@
-/* Layout geral */
+/* ======= TEMA GERAL ======= */
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0d47a1, #42a5f5);
+    min-height: 100vh;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Topo com botão Sair */
+/* ======= TOPO ======= */
 .top-bar {
-  display: flex;
-  justify-content: flex-end;
-  padding: 10px 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #ccc;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px;
 }
 
 .top-bar button {
-  background-color: #d9534f;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-weight: bold;
+    background: #ff5252;
+    border: none;
+    padding: 10px 18px;
+    color: #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
 .top-bar button:hover {
-  background-color: #c9302c;
+    background: #d32f2f;
+    transform: scale(1.05);
 }
 
-/* Título */
-h1 {
-  text-align: center;
-  margin-top: 20px;
-  color: #333;
+/* ======= TÍTULO ======= */
+.titulo-principal {
+
+    font-size: 34px;
+    font-weight: 800;
+    text-align: center;
+    background: linear-gradient(45deg, #00aaff, #9966ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1.5px;
+    margin-bottom: 25px;
 }
 
-/* Formulário de cadastro */
+/* ======= FORMULÁRIO ======= */
 form {
-  max-width: 600px;
-  margin: 20px auto;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    padding: 25px;
+    border-radius: 18px;
+    width: 90%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
-form input,
-form select {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+form input {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 15px;
 }
 
 form button {
-  background-color: #5cb85c;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-weight: bold;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #2962ff;
+    color: #fff;
+    cursor: pointer;
+    font-size: 17px;
+    transition: 0.2s;
 }
 
 form button:hover {
-  background-color: #4cae4c;
+    background: #0039cb;
+    transform: scale(1.03);
 }
 
-/* Tabela de clientes */
-table {
-  width: 90%;
-  margin: 20px auto;
-  border-collapse: collapse;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+/* ======= TABELA ======= */
+#tabelaClientes {
+    margin-top: 35px;
+    width: 95%;
+    max-width: 1100px;
+    border-collapse: collapse;
+    background: rgba(255,255,255,0.95);
+    color: #000;
+    border-radius: 15px;
+    overflow: hidden;
 }
 
-th, td {
-  padding: 12px;
-  border: 1px solid #ddd;
-  text-align: center;
+#tabelaClientes thead {
+    background: #2962ff;
+    color: #fff;
 }
 
-th {
-  background-color: #f2f2f2;
-  color: #333;
+#tabelaClientes th,
+#tabelaClientes td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    font-size: 15px;
 }
 
-/* Linha inadimplente */
-.inadimplente {
-  background-color: #ffe6e6;
+#tabelaClientes tbody tr:nth-child(even) {
+    background: #f5f5f5;
 }
 
-/* Botões de ação na tabela */
-table button {
-  padding: 6px 12px;
-  margin: 2px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
+#tabelaClientes tbody tr:hover {
+    background: #e3f2fd;
 }
 
-table button:hover {
-  opacity: 0.9;
+/* ======= BOTÕES DA TABELA ======= */
+#tabelaClientes button {
+    margin: 3px;
+    padding: 7px 12px;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 14px;
+    width: 100px;
 }
 
-table button:first-child {
-  background-color: #0275d8;
-  color: white;
+#tabelaClientes button:hover {
+    transform: scale(1.05);
 }
 
-table button:last-child {
-  background-color: #d9534f;
-  color: white;
+/* Ações específicas */
+button.editar { background: #2979ff; }
+button.excluir { background: #d32f2f; }
+button.notificar { background: #f9a825; }
+
+button.editar:hover { background: #154baf; }
+button.excluir:hover { background: #9a0007; }
+button.notificar:hover { background: #c17900; }
+/* BADGE de status */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 14px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 13px;
+    display: inline-block;
 }
 
-/* Tela de login */
-.login-container {
-  max-width: 400px;
-  margin: 80px auto;
-  background-color: #fff;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
-  text-align: center;
+/* Em dia = verde */
+.status-dia {
+    background: #2ecc71;
 }
 
-.login-container h2 {
-  margin-bottom: 20px;
-  color: #333;
+/* Inadimplente = vermelho */
+.status-inad {
+    background: #e74c3c;
 }
-
-.login-container input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.login-container button {
-  width: 100%;
-  padding: 12px;
-  background-color: #0275d8;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.login-container button:hover {
-  background-color: #025aa5;
-}
-/* Botões de ação na tabela */
-button {
-  padding: 6px 10px;
-  margin: 2px;
-  border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-/* Caixa de notificação simulada */
+/* POPUP de notificação */
 .notificacao-box {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 15px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  z-index: 999;
-  font-family: Arial, sans-serif;
-  width: 300px;
-  animation: fadeIn 0.3s ease-in-out;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: rgba(220, 38, 38, 0.85); /* vermelho moderno com transparência */
+    backdrop-filter: blur(10px);
+    padding: 18px;
+    width: 280px;
+    border-radius: 15px;
+    color: #fff; /* letras brancas */
+    font-size: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    animation: aparecer 0.4s ease-out;
+    border-left: 6px solid #ffffff; /* faixa branca */
+    z-index: 9999;
 }
 
-/* Animação de entrada */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes aparecer {
+    from { opacity: 0; transform: translateY(25px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.btn-editar, .btn-excluir, .btn-notificar {
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .2s ease;
+    font-weight: 600;
+    color: #fff;
+}
+.btn-editar {
+    background: #3b82f6; /* azul bonito */
+}
+.btn-editar:hover {
+    background: #1d4ed8;
+    transform: scale(1.05);
+}
+.btn-excluir {
+    background: #ef4444;
+}
+.btn-excluir:hover {
+    background: #b91c1c;
+    transform: scale(1.05);
+}
+.btn-notificar {
+    background: #22c55e;
+}
+.btn-notificar:hover {
+    background: #15803d;
+    transform: scale(1.05);
+}
+
+.popup-cadastro {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(34, 197, 94, 0.85); /* verde moderno */
+    backdrop-filter: blur(10px);
+    color: #fff;
+    padding: 15px 18px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.4);
+    opacity: 0;
+    transform: translateY(-15px);
+    transition: 0.3s ease;
+    z-index: 9999;
+}
+
+.popup-cadastro.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+.inadimplente {
+    background-color: rgba(239, 68, 68, 0.25); /* vermelho suave */
+    border-left: 5px solid #ef4444; /* faixa vermelha */
+}
+
+.inadimplente td {
+    color: #fff; /* letras brancas pro contraste */
+}
+
+/* Deixar mais moderno */
+.inadimplente:hover {
+    background-color: rgba(239, 68, 68, 0.45);
+    transition: 0.2s;
+}
+.modo-edicao {
+    background: #f59e0b !important;  /* amarelo bonito */
+}
+.modo-edicao:hover {
+    background: #d97706 !important;
 }

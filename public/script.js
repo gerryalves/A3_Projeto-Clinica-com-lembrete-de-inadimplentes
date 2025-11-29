@@ -43,6 +43,7 @@ document.getElementById("formCliente").addEventListener("submit", async function
 
   limparFormulario();
   carregarClientes();
+  mostrarPopupCadastro();
 });
 
 function validarCampos(cliente) {
@@ -82,11 +83,13 @@ function preencherFormulario(cliente) {
   document.getElementById("valor").value = cliente.valor;
   document.getElementById("vencimento").value = cliente.vencimento;
   document.getElementById("formCliente").dataset.id = cliente.id;
+  atualizarEstadoBotao();
 }
 
 function limparFormulario() {
   document.getElementById("formCliente").reset();
   delete document.getElementById("formCliente").dataset.id;
+  atualizarEstadoBotao();
 }
 
 async function carregarClientes() {
@@ -102,16 +105,19 @@ async function carregarClientes() {
     let notificacao = "";
 
     if (diasAtraso > 0 && diasAtraso <= 1) {
-  notificacao = "Aviso amigável";
-} else if (diasAtraso > 1 && diasAtraso <= 10) {
-  notificacao = "Lembrete formal";
-} else if (diasAtraso > 10) {
-  notificacao = "Notificação final";
-}
-cliente.notificacao = notificacao; // ← ESSA LINHA É ESSENCIAL
+      notificacao = "Aviso amigável";
+    } else if (diasAtraso > 1 && diasAtraso <= 10) {
+      notificacao = "Lembrete formal";
+    } else if (diasAtraso > 10) {
+      notificacao = "Notificação final";
+    }
+
+    cliente.notificacao = notificacao;
+
+    // BADGE DE STATUS
+    const statusClasse = status === "Inadimplente" ? "status-inad" : "status-dia";
 
     const linha = document.createElement("tr");
-    if (status === "Inadimplente") linha.classList.add("inadimplente");
 
     linha.innerHTML = `
       <td>${cliente.nome}</td>
@@ -119,14 +125,15 @@ cliente.notificacao = notificacao; // ← ESSA LINHA É ESSENCIAL
       <td>${cliente.plano}</td>
       <td>R$ ${cliente.valor}</td>
       <td>${venc.toLocaleDateString()}</td>
-      <td>${status}</td>
+      <td><span class="status-badge ${statusClasse}">${status}</span></td>
       <td>${notificacao}</td>
       <td>
-        <button onclick="editarCliente(${cliente.id})">Editar</button>
-        <button onclick="excluirCliente(${cliente.id})">Excluir</button>
-        <button onclick='enviarNotificacao(${JSON.stringify(cliente)})'>Enviar notificação</button>
+        <button onclick="editarCliente(${cliente.id})" class="btn-editar">Editar</button>
+        <button onclick="excluirCliente(${cliente.id})" class="btn-excluir">Excluir</button>
+        <button onclick='enviarNotificacao(${JSON.stringify(cliente)})' class="btn-notificar">Notificar</button>
       </td>
     `;
+
     tabela.appendChild(linha);
   });
 }
@@ -145,32 +152,59 @@ async function excluirCliente(id) {
     carregarClientes();
   }
 }
-function enviarNotificacao(cliente) {
-  // Garante que o tipo de notificação existe
-  const tipo = cliente.notificacao || 'Aviso amigável';
 
-  fetch('/simular-envio', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+function enviarNotificacao(cliente) {
+  const tipo = cliente.notificacao || "Aviso amigável";
+
+  fetch("/simular-envio", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ...cliente, notificacao: tipo })
   })
-  .then(res => res.json())
-  .then(data => {
-    const box = document.createElement('div');
-    box.className = 'notificacao-box';
-    box.innerHTML = `
-      <strong> ✉️ ${data.tipo}</strong><br>
-      Enviado para ${data.email}:<br>
-      ${data.mensagem}<br>
-      <small>${data.timestamp}</small>
-`;
-    document.body.appendChild(box);
-    setTimeout(() => box.remove(), 5000);
-  })
-  .catch(err => {
-    console.error(err);
-    alert('Erro ao simular envio');
-  });
+    .then(res => res.json())
+    .then(data => {
+      const box = document.createElement("div");
+      box.className = "notificacao-box";
+      box.innerHTML = `
+        <strong> ✉️ ${data.tipo}</strong><br>
+        Enviado para ${data.email}:<br>
+        ${data.mensagem}<br>
+        <small>${data.timestamp}</small>
+      `;
+      document.body.appendChild(box);
+      setTimeout(() => box.remove(), 5000);
+    })
+    .catch(() => alert("Erro ao simular envio"));
 }
 
 carregarClientes();
+
+function mostrarPopupCadastro() {
+  const box = document.createElement("div");
+  box.className = "popup-cadastro";
+  box.innerHTML = `
+    <strong>✔ Cliente cadastrado!</strong><br>
+    O registro foi salvo com sucesso.
+  `;
+  
+  document.body.appendChild(box);
+
+  setTimeout(() => {
+    box.classList.add("show");
+  }, 50);
+
+  setTimeout(() => {
+    box.classList.remove("show");
+    setTimeout(() => box.remove(), 300);
+  }, 3000);
+}
+function atualizarEstadoBotao() {
+  const botao = document.querySelector("#formCliente button[type='submit']");
+  if (document.getElementById("formCliente").dataset.id) {
+    botao.textContent = "Atualizar Cliente";
+    botao.classList.add("modo-edicao");
+  } else {
+    botao.textContent = "Cadastrar Cliente";
+    botao.classList.remove("modo-edicao");
+  }
+}
